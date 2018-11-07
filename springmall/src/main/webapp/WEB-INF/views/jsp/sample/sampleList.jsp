@@ -13,9 +13,9 @@
 <body>
 	<div style="display:table; margin:0 auto;">
 		<h1>sampleList</h1>
-		<h4>LastPage : ${lastPage}</h4>
-		<h4>currentPage : ${currentPage}</h4>
-		<h4>lastPageButton : ${lastPageButton}</h4>
+		<h6>LastPage : ${lastPage}</h6>
+		<h6>currentPage : ${currentPage}</h6>
+		<h6>lastPageButton : ${lastPageButton}</h6>
 		<table class="table table-responsive table-hover">
 			<thead>
 				<tr>
@@ -38,6 +38,22 @@
 					</tr>
 				</c:forEach>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="5" style="text-align:center">
+						<ul class="pagination">
+							<c:forEach var="i" begin="1" end="${lastPageButton }" step="1">
+								<c:if test="${i!=currentPage }">
+									<li class="page-item"><a class="page-link" href="/sample/sampleList?page=${i}">${i}</a></li>
+								</c:if>
+								<c:if test="${i==currentPage }">
+									<li class="page-item active"><a class="page-link">${i}</a></li>
+								</c:if>
+							</c:forEach>
+						</ul>
+					</td>
+				</tr>
+			</tfoot>
 		</table>	
 	</div>
 </body>
