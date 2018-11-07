@@ -60,7 +60,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-				<!--jsp사용을 위한 의존성 추가  -->
+		<!--jsp사용을 위한 의존성 추가  -->
 		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
