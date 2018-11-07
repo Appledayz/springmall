@@ -31,6 +31,7 @@ public class SampleService {
 		if(totalRow%rowPerPage != 0) {
 			lastPage++;
 		}
+		lastPageButton = ((currentPage+9)/10)*10;
 		if((lastPage-1)/10 == (currentPage-1)/10) {
 			lastPageButton = lastPage;
 		}

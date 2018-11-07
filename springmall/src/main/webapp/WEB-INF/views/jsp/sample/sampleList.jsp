@@ -42,7 +42,7 @@
 				<tr>
 					<td colspan="5" style="text-align:center">
 						<ul class="pagination">
-							<c:forEach var="i" begin="1" end="${lastPageButton }" step="1">
+							<c:forEach var="i" begin="${lastPageButton-9 }" end="${lastPageButton }" step="1">
 								<c:if test="${i!=currentPage }">
 									<li class="page-item"><a class="page-link" href="/sample/sampleList?page=${i}">${i}</a></li>
 								</c:if>
