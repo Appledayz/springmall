@@ -27,12 +27,21 @@
     	FROM sample;
     </select>
     
+    <select id="selectOne" parameterType="int" resultType="com.example.springmall.sample.vo.Sample">
+    	SELECT
+    		sample_no as sampleNo,
+    		sample_id as sampleId,
+    		sample_pw as samplePw
+    	FROM sample
+		WHERE sample_no=#{sampleNo}
+    </select>
+    
     <delete id="deleteSample" parameterType="int">
     	DELETE FROM sample
     	WHERE sample_no=#{sampleNo};
     </delete>
     
-    <update id="updateSample" parameterType="int">
+    <update id="updateSample">
     	UPDATE sample
     	SET sample_id=#{sampleId},
    			sample_pw=#{samplePw}

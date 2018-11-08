@@ -16,6 +16,7 @@
 		<h6>LastPage : ${lastPage}</h6>
 		<h6>currentPage : ${currentPage}</h6>
 		<h6>lastPageButton : ${lastPageButton}</h6>
+		<h6>firstPageButton : ${firstPageButton}</h6>
 		<table class="table table-responsive table-hover">
 			<thead>
 				<tr>
@@ -40,9 +41,16 @@
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="5" style="text-align:center">
+					<td colspan="5">
+						<div style="display:table; margin:0 auto;">
 						<ul class="pagination">
-							<c:forEach var="i" begin="${lastPageButton-9 }" end="${lastPageButton }" step="1">
+							<c:if test="${lastPageButton>10 }">
+								<li class="page-item"><a class="page-link" href="/sample/sampleList?page=1"><<</a></li>
+							</c:if>
+							<c:if test="${lastPageButton>10 }">
+								<li class="page-item"><a class="page-link" href="/sample/sampleList?page=${firstPageButton-1 }"><</a></li>
+							</c:if>
+							<c:forEach var="i" begin="${firstPageButton }" end="${lastPageButton }" step="1">
 								<c:if test="${i!=currentPage }">
 									<li class="page-item"><a class="page-link" href="/sample/sampleList?page=${i}">${i}</a></li>
 								</c:if>
@@ -50,7 +58,14 @@
 									<li class="page-item active"><a class="page-link">${i}</a></li>
 								</c:if>
 							</c:forEach>
+							<c:if test="${lastPageButton<lastPage }">
+								<li class="page-item"><a class="page-link" href="/sample/sampleList?page=${lastPageButton+1 }">></a></li>
+							</c:if>
+							<c:if test="${lastPageButton<lastPage }">
+								<li class="page-item"><a class="page-link" href="/sample/sampleList?page=${lastPage }">>></a></li>
+							</c:if>
 						</ul>
+						</div>
 					</td>
 				</tr>
 			</tfoot>
