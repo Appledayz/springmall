@@ -7,21 +7,50 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(()=>{
+			$('#id').blur(()=>{
+				if($('#id').val().length < 4){
+					$('#idHelper').text('아이디를 4자 이상 입력하세요.');
+				}else {
+					$('#idHelper').text('');
+				}
+			});
+			$('#pw').blur(()=>{
+				if($('#pw').val().length < 4){
+					$('#pwHelper').text('비밀번호를 4자 이상 입력하세요.');
+				}else {
+					$('#pwHelper').text('');
+				}
+			});
+			$('#submitBtn').click(()=>{
+				if($('#id').val().length > 3 && $('#pw').val().length > 3){
+					$('#addSampleForm').submit();
+				}
+			});
+		});
+	</script>
 	<title>AddSample</title>
 </head>
 <body>
 	<div style="display:table; margin:0 auto;">
 		<h1>AddSample</h1>
-		<form action="/sample/addSample" method="post">
+		<form id="addSampleForm" action="/sample/addSample" method="post">
 			<table class="table table-responsive table-hover">
 				<tr>
-					<td>Sample ID : </td><td><input type="text" name="sampleId"></td>
+					<td><label for="id">Sample ID : </label></td>
+					<td><input class="form-control" id="id" type="text" name="sampleId" autofocus required>
+						<span id="idHelper"></span>
+					</td>
 				</tr>
 				<tr>
-					<td>Sample PW : </td><td><input type="password" name="samplePw"></td>
+					<td><label for="pw">Sample PW : </label></td>
+					<td><input class="form-control" id="pw" type="password" name="samplePw" required>
+						<span id="pwHelper"></span>
+					</td>
 				</tr>
 				<tr>
-					<td colspan="2"><button type="submit">입력</button></td>
+					<td colspan="2"><button id="submitBtn" class="btn btn-primary" type="button">입력</button></td>
 				</tr>
 			</table>
 		</form>
