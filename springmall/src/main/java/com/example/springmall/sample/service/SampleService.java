@@ -99,38 +99,40 @@ public class SampleService {
 		sample.setSamplePw(sampleRequest.getSamplePw());
 		sampleMapper.insertSample(sample);
 		
-		//	mybatis가 insetSample(sample) 후에 sampleNo에 PK값을 채워준다.
-		MultipartFile multipartFile = sampleRequest.getMultipartFile();
-		SampleFile sampleFile = new SampleFile();
-		//	1. sampleFileNo : AutoIncrement
-		//	2. sampleNo
-		sampleFile.setSampleNo(sample.getSampleNo());
-		//	3. sampleFilePath
-		String path = "d:\\uploads";
-		sampleFile.setSampleFilePath(path);
-		//	4. 확장자
-		String originalFileName = multipartFile.getOriginalFilename();
-		int pos = originalFileName.lastIndexOf(".");
-		String ext = originalFileName.substring(pos+1);
-		sampleFile.setSampleFileExt(ext);
-		//	5. 이름
-		String filename = UUID.randomUUID().toString();
-		sampleFile.setSmapleFileName(filename);
-		//	6. 타입
-		sampleFile.setSampleFileType(multipartFile.getContentType());
-		//	7. 크기
-		sampleFile.setSampleFileSize(multipartFile.getSize());
-		
-		//	내가 원하는 이름의 빈파일 하나를 만들자
-		File file = new File(path+"\\"+filename+"."+ext);
-		//	multipartFile파일을 빈파일로 복사하자
-		try {
-			multipartFile.transferTo(file);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(sampleRequest.getMultipartFile() != null) {
+			//	mybatis가 insetSample(sample) 후에 sampleNo에 PK값을 채워준다.
+			MultipartFile multipartFile = sampleRequest.getMultipartFile();
+			SampleFile sampleFile = new SampleFile();
+			//	1. sampleFileNo : AutoIncrement
+			//	2. sampleNo
+			sampleFile.setSampleNo(sample.getSampleNo());
+			//	3. sampleFilePath
+			String path = "d:\\uploads";
+			sampleFile.setSampleFilePath(path);
+			//	4. 확장자
+			String originalFileName = multipartFile.getOriginalFilename();
+			int pos = originalFileName.lastIndexOf(".");
+			String ext = originalFileName.substring(pos+1);
+			sampleFile.setSampleFileExt(ext);
+			//	5. 이름
+			String filename = UUID.randomUUID().toString();
+			sampleFile.setSmapleFileName(filename);
+			//	6. 타입
+			sampleFile.setSampleFileType(multipartFile.getContentType());
+			//	7. 크기
+			sampleFile.setSampleFileSize(multipartFile.getSize());
+			
+			//	내가 원하는 이름의 빈파일 하나를 만들자
+			File file = new File(path+"\\"+filename+"."+ext);
+			//	multipartFile파일을 빈파일로 복사하자
+			try {
+				multipartFile.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			sampleFileMapper.insertSampleFile(sampleFile);
+			System.out.println(sampleFile.toString());
 		}
-		sampleFileMapper.insertSampleFile(sampleFile);
-		System.out.println(sampleFile.toString());
 		return 0;
 	}
 	

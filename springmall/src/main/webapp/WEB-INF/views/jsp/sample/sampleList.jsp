@@ -8,11 +8,23 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+		.btn {
+			margin:0 1px 0 1px;
+		}
+	</style>
 	<title>SampleList</title>
 </head>
 <body>
 	<div style="display:table; margin:0 auto;">
 		<h1>sampleList</h1>
+		<c:if test="${S_ID == null}">
+			<a class="btn btn-primary" href="/sample/login">로그인</a>
+		</c:if>
+		<c:if test="${S_ID != null}">
+			<a class="btn btn-primary" href="/sample/logout">로그아웃</a>
+		</c:if>
+		<a class="btn btn-primary" href="/sample/addSample">Sample 추가</a>
 		<table class="table table-responsive table-hover">
 			<thead>
 				<tr>
