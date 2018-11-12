@@ -35,7 +35,7 @@
 <body>
 	<div style="display:table; margin:0 auto;">
 		<h1>AddSample</h1>
-		<form id="addSampleForm" action="/sample/addSample" method="post">
+		<form id="addSampleForm" action="/sample/addSample" method="post" enctype="multipart/form-data">
 			<table class="table table-responsive table-hover">
 				<tr>
 					<td><label for="id">Sample ID : </label></td>
@@ -47,6 +47,12 @@
 					<td><label for="pw">Sample PW : </label></td>
 					<td><input class="form-control" id="pw" type="password" name="samplePw" required>
 						<span id="pwHelper"></span>
+					</td>
+				</tr>
+				<tr>
+					<td><label for="multipartFile">Sample File : </label></td>
+					<td><input class="form-control" id="multipartFile" type="file" name="multipartFile">
+						<span id="fileHelper"></span>
 					</td>
 				</tr>
 				<tr>

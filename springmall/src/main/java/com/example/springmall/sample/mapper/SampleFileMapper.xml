@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.example.springmall.sample.mapper.SampleFileMapper">
+    <insert id="insertSampleFile">
+    	<selectKey resultType="int" keyProperty="sampleFileNo" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    	INSERT INTO samplefile
+    	VALUES(0,#{sampleNo},#{sampleFilePath},#{sampleFileName},#{sampleFileExt},#{sampleFileType},#{sampleFileSize},now());
+    </insert>
+    
+    <select id="selectSampleFile" parameterType="hashmap" resultType="com.example.springmall.sample.vo.SampleFile">
+    	SELECT
+    		samplefile_no as sampleFileNo,
+    		sample_no as sampleNo,
+    		samplefile_path as sampleFilePath,
+    		samplefile_name as sampleFileName,
+    		samplefile_ext as sampleFileExt,
+    		samplefile_type as sampleFileType,
+    		samplefile_size as sampleFileSize,
+    		samplefile_date as sampleFileDate
+    	FROM samplefile
+    	LIMIT #{startRow},#{rowPerPage};
+    </select>
+    
+    <select id="selectCountSampleFileAll" resultType="int">
+    	SELECT COUNT(*)
+    	FROM samplefile;
+    </select>
+    
+    <select id="selectOne" parameterType="int" resultType="com.example.springmall.sample.vo.SampleFile">
+    	SELECT
+    		samplefile_no as sampleFileNo,
+    		sample_no as sampleNo,
+    		samplefile_path as sampleFilePath,
+    		samplefile_name as sampleFileName,
+    		samplefile_ext as sampleFileExt,
+    		samplefile_type as sampleFileType,
+    		samplefile_size as sampleFileSize,
+    		samplefile_date as sampleFileDate
+    	FROM samplefile
+		WHERE samplefile_no=#{sampleFileNo}
+    </select>
+    
+    <delete id="deleteSampleFile" parameterType="int">
+    	DELETE FROM samplefile
+    	WHERE samplefile_no=#{sampleFileNo};
+    </delete>
+    
+    <update id="updateSampleFile">
+    	UPDATE samplefile
+    	SET 
+    		sample_no = #{sampleNo},
+    		samplefile_path = #{sampleFilePath},
+    		samplefile_name = #{sampleFileName},
+    		samplefile_ext = #{sampleFileExt},
+    		samplefile_type = #{sampleFileType},
+    		samplefile_size = #{sampleFileSize},
+    		samplefile_date = #{sampleFileDate}
+    	WHERE samplefile_no=#{sampleFileNo}
+    </update>
+    
+</mapper>

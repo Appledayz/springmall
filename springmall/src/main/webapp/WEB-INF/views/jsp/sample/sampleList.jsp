@@ -13,10 +13,6 @@
 <body>
 	<div style="display:table; margin:0 auto;">
 		<h1>sampleList</h1>
-		<h6>LastPage : ${lastPage}</h6>
-		<h6>currentPage : ${currentPage}</h6>
-		<h6>lastPageButton : ${lastPageButton}</h6>
-		<h6>firstPageButton : ${firstPageButton}</h6>
 		<table class="table table-responsive table-hover">
 			<thead>
 				<tr>

@@ -5,8 +5,11 @@
   
 <mapper namespace="com.example.springmall.sample.mapper.SampleMapper">
     <insert id="insertSample">
+    	<selectKey resultType="int" keyProperty="sampleNo" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     	INSERT INTO sample
-    	VALUES(#{sampleNo},#{sampleId},#{samplePw});
+    	VALUES(0,#{sampleId},#{samplePw});
     </insert>
     
     <select id="selectCountSample" resultType="int">

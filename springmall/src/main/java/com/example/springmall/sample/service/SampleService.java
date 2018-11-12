@@ -1,22 +1,32 @@
 package com.example.springmall.sample.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.springmall.sample.mapper.SampleFileMapper;
 import com.example.springmall.sample.mapper.SampleMapper;
 import com.example.springmall.sample.vo.Sample;
+import com.example.springmall.sample.vo.SampleFile;
+import com.example.springmall.sample.vo.SampleRequest;
 
 @Service
 @Transactional
 public class SampleService {
 	@Autowired
 	private SampleMapper sampleMapper;
+	@Autowired
+	private SampleFileMapper sampleFileMapper;
+	
 	//	1
 	public HashMap<String, Object> getSampleList(int page){
+		System.out.println("SampleService.getSampleList()");
 		//	페이징 관련 코드
 		HashMap<String, Integer> pagingInfo = new HashMap<String, Integer>();
 		int totalRow = sampleMapper.selectCountSampleAll();
@@ -72,16 +82,61 @@ public class SampleService {
 	
 	//	2
 	public int removeSample(int sampleNo) {
+		System.out.println("SampleService.removeSample()");
 		return sampleMapper.deleteSample(sampleNo);
 	}
 	
 	//	3
-	public int addSample(Sample sample) {
-		return sampleMapper.insertSample(sample);
+	public int addSample(SampleRequest sampleRequest) {
+		System.out.println("SampleService.addSample()");
+		/*
+		 * SampleRequest --> Sample
+		 * 1. multipartfile 파일데이터 -- > 저장
+		 * 2. multipartfile 정보 --> SampleFile
+		 */
+		Sample sample = new Sample();
+		sample.setSampleId(sampleRequest.getSampleId());
+		sample.setSamplePw(sampleRequest.getSamplePw());
+		sampleMapper.insertSample(sample);
+		
+		//	mybatis가 insetSample(sample) 후에 sampleNo에 PK값을 채워준다.
+		MultipartFile multipartFile = sampleRequest.getMultipartFile();
+		SampleFile sampleFile = new SampleFile();
+		//	1. sampleFileNo : AutoIncrement
+		//	2. sampleNo
+		sampleFile.setSampleNo(sample.getSampleNo());
+		//	3. sampleFilePath
+		String path = "d:\\uploads";
+		sampleFile.setSampleFilePath(path);
+		//	4. 확장자
+		String originalFileName = multipartFile.getOriginalFilename();
+		int pos = originalFileName.lastIndexOf(".");
+		String ext = originalFileName.substring(pos+1);
+		sampleFile.setSampleFileExt(ext);
+		//	5. 이름
+		String filename = UUID.randomUUID().toString();
+		sampleFile.setSmapleFileName(filename);
+		//	6. 타입
+		sampleFile.setSampleFileType(multipartFile.getContentType());
+		//	7. 크기
+		sampleFile.setSampleFileSize(multipartFile.getSize());
+		
+		//	내가 원하는 이름의 빈파일 하나를 만들자
+		File file = new File(path+"\\"+filename+"."+ext);
+		//	multipartFile파일을 빈파일로 복사하자
+		try {
+			multipartFile.transferTo(file);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		sampleFileMapper.insertSampleFile(sampleFile);
+		System.out.println(sampleFile.toString());
+		return 0;
 	}
 	
 	//	4
 	public Sample getSample(int sampleNo) {
+		System.out.println("SampleService.getSample()");
 		return sampleMapper.selectOne(sampleNo);
 	}
 	

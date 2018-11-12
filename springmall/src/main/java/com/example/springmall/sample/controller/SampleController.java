@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springmall.sample.service.SampleService;
 import com.example.springmall.sample.vo.Sample;
+import com.example.springmall.sample.vo.SampleRequest;
 
 @Controller
 public class SampleController {
@@ -52,11 +53,12 @@ public class SampleController {
 	
 	//	3-2. 입력액션
 	@RequestMapping(value="/sample/addSample", method=RequestMethod.POST)
-	public String addSample(Sample sample) {
+	public String addSample(SampleRequest sampleRequest) {
 		System.out.println("SampleController.addSample POST 요청 받음");
 		//	- Sample 친구들...
 		//	command객체의 멤버변수 == input태그 name속성, 표준setter필요
-		if(sampleService.addSample(sample)==1) {
+		System.out.println("SampleRequest.multiparFile : "+sampleRequest.getMultipartFile());
+		if(sampleService.addSample(sampleRequest)==1) {
 			System.out.println("입력 완료");
 		}
 		return "redirect:/sample/sampleList";
