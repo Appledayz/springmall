@@ -14,6 +14,12 @@
 					$('#loginForm').submit();
 				}
 			});
+			$('input').keypress((f)=>{
+				console.log(f.keyCode);
+				if(f.keyCode==13){
+					$('#loginForm').submit();
+				}
+			});
 		});
 	</script>
 	<title>Login</title>

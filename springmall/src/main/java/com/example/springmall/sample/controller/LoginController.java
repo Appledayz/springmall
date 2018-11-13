@@ -25,16 +25,17 @@ public class LoginController {
 	@RequestMapping(value="/sample/login", method=RequestMethod.POST)
 	public String login(HttpSession session, Sample sample) {
 		System.out.println("LoginController.login POST요청");
-		System.out.println("loginService.login(sample) : "+ loginService.login(sample));
 		if(loginService.login(sample)==1) {
 			System.out.println("session S_ID 저장 : "+sample.getSampleId());
 			session.setAttribute("S_ID", sample.getSampleId());
+			return "redirect:/sample/sampleList";
+		}else {
+			return "redirect:/sample/login";
 		}
-		return "redirect:/sample/sampleList";
 	}
 	
 	
-	@RequestMapping(value="/value/logout")
+	@RequestMapping(value="/sample/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/sample/sampleList";
