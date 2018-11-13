@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SampleRequest {
 	private String sampleId;
 	private String samplePw;
-	private MultipartFile multipartFile;
+	private MultipartFile[] multipartFile;
 	
 	public String getSampleId() {
 		return sampleId;
@@ -19,10 +19,10 @@ public class SampleRequest {
 	public void setSamplePw(String samplePw) {
 		this.samplePw = samplePw;
 	}
-	public MultipartFile getMultipartFile() {
+	public MultipartFile[] getMultipartFile() {
 		return multipartFile;
 	}
-	public void setMultipartFile(MultipartFile multipartFile) {
+	public void setMultipartFile(MultipartFile[] multipartFile) {
 		this.multipartFile = multipartFile;
-	} 
+	}
 }

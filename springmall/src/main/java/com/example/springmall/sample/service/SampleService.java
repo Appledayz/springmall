@@ -83,12 +83,16 @@ public class SampleService {
 	// 2
 	public int removeSample(int sampleNo) {
 		System.out.println("SampleService.removeSample()");
-		return sampleMapper.deleteSample(sampleNo);
+		int i=0;
+		i += sampleFileMapper.deleteSampleFile(sampleNo);
+		i += sampleMapper.deleteSample(sampleNo);
+		return i;
 	}
 
 	// 3
 	public int addSample(SampleRequest sampleRequest) {
 		System.out.println("SampleService.addSample()");
+		int i=0;
 		/*
 		 * SampleRequest --> Sample
 		 * 1. multipartfile 파일데이터 -- > 저장
@@ -98,53 +102,54 @@ public class SampleService {
 		sample.setSampleId(sampleRequest.getSampleId());
 		sample.setSamplePw(sampleRequest.getSamplePw());
 		sampleMapper.insertSample(sample);
+		// mybatis가 insetSample(sample) 후에 sampleNo에 PK값을 채워준다.
 
 		if (sampleRequest.getMultipartFile() != null) {
-			// mybatis가 insetSample(sample) 후에 sampleNo에 PK값을 채워준다.
-			MultipartFile multipartFile = sampleRequest.getMultipartFile();
-			SampleFile sampleFile = new SampleFile();
-			// 1. sampleFileNo : AutoIncrement
-			// 2. sampleNo
-			sampleFile.setSampleNo(sample.getSampleNo());
-			// 3. sampleFilePath
-			String path = "d:\\uploads";
-			sampleFile.setSampleFilePath(path);
-			// 4. 확장자
-			String originalFileName = multipartFile.getOriginalFilename();
-			int pos = originalFileName.lastIndexOf(".");
-			String ext = originalFileName.substring(pos + 1);
-			sampleFile.setSampleFileExt(ext);
-			// 5. 이름
-			String filename = UUID.randomUUID().toString();
-			sampleFile.setSmapleFileName(filename);
-			// 6. 타입
-			sampleFile.setSampleFileType(multipartFile.getContentType());
-			// 7. 크기
-			sampleFile.setSampleFileSize(multipartFile.getSize());
-
-			//	경로가 없으면 생성한다.
-			File folder = new File("D:\\uploads");
-			if (!folder.exists()) {
-				if (folder.mkdirs()) {
-					System.out.println("Multiple directories are created!");
-				} else {
-					System.out.println("Failed to create multiple directories!");
+			for(MultipartFile multipartFile : sampleRequest.getMultipartFile()) {
+				SampleFile sampleFile = new SampleFile();
+				// 1. sampleFileNo : AutoIncrement
+				// 2. sampleNo
+				sampleFile.setSampleNo(sample.getSampleNo());
+				// 3. sampleFilePath
+				String path = "d:\\uploads";
+				sampleFile.setSampleFilePath(path);
+				// 4. 확장자
+				String originalFileName = multipartFile.getOriginalFilename();
+				int pos = originalFileName.lastIndexOf(".");
+				String ext = originalFileName.substring(pos + 1);
+				sampleFile.setSampleFileExt(ext);
+				// 5. 이름
+				String filename = UUID.randomUUID().toString();
+				sampleFile.setSmapleFileName(filename);
+				// 6. 타입
+				sampleFile.setSampleFileType(multipartFile.getContentType());
+				// 7. 크기
+				sampleFile.setSampleFileSize(multipartFile.getSize());
+	
+				//	경로가 없으면 생성한다.
+				File folder = new File("D:\\uploads");
+				if (!folder.exists()) {
+					if (folder.mkdirs()) {
+						System.out.println("Multiple directories are created!");
+					} else {
+						System.out.println("Failed to create multiple directories!");
+					}
 				}
+				try {
+					//	내가 원하는 이름의 빈파일 하나를 만들자
+					File file = new File(path + "\\" + filename + "." + ext);
+					//	multipartFile파일을 빈파일로 복사하자
+					multipartFile.transferTo(file);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if(sampleFileMapper.insertSampleFile(sampleFile)==1) {
+					i++;
+				}
+				System.out.println(sampleFile.toString());
 			}
-			
-			//	내가 원하는 이름의 빈파일 하나를 만들자
-			File file = new File(path + "\\" + filename + "." + ext);
-			
-			//	multipartFile파일을 빈파일로 복사하자
-			try {
-				multipartFile.transferTo(file);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			sampleFileMapper.insertSampleFile(sampleFile);
-			System.out.println(sampleFile.toString());
 		}
-		return 0;
+		return i;
 	}
 
 	// 4

@@ -45,9 +45,14 @@
 		WHERE samplefile_no=#{sampleFileNo}
     </select>
     
-    <delete id="deleteSampleFile" parameterType="int">
+    <delete id="deleteSampleFileOne" parameterType="int">
     	DELETE FROM samplefile
     	WHERE samplefile_no=#{sampleFileNo};
+    </delete>
+    
+    <delete id="deleteSampleFile" parameterType="int">
+    	DELETE FROM samplefile
+    	WHERE sample_no=#{sampleNo};
     </delete>
     
     <update id="updateSampleFile">

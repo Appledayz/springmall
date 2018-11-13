@@ -27,6 +27,27 @@
 				if($('#id').val().length > 3 && $('#pw').val().length > 3){
 					$('#addSampleForm').submit();
 				}
+				if($('#id').val().length < 4){
+					$('#idHelper').text('아이디를 4자 이상 입력하세요.');
+				}else {
+					$('#idHelper').text('');
+				}
+				if($('#pw').val().length < 4){
+					$('#pwHelper').text('비밀번호를 4자 이상 입력하세요.');
+				}else {
+					$('#pwHelper').text('');
+				}
+			});
+			$('input').keypress((f)=>{
+				if(f.keyCode==13){
+					$('#addSampleForm').submit();
+				}
+			});
+			$('#addFileInputBtn').click(()=>{
+				$('#fileHelper').append('<input class="form-control" type="file" name="multipartFile"></span>');
+			});
+			$('#removeFileInputBtn').click(()=>{
+				$('#fileHelper input:last-child').remove();
 			});
 		});
 	</script>
@@ -51,8 +72,14 @@
 				</tr>
 				<tr>
 					<td><label for="multipartFile">Sample File : </label></td>
-					<td><input class="form-control" id="multipartFile" type="file" name="multipartFile">
-						<span id="fileHelper"></span>
+					<td>
+						<div id="fileHelper">
+							<input class="form-control" type="file" name="multipartFile">
+						</div>
+						<div style="display:table; margin:0 auto;">
+							<button class="btn btn-dark" id="addFileInputBtn" type="button" style="border-radius:50%; width:30px; height:30px;">+</button>
+							<button class="btn btn-dark" id="removeFileInputBtn" type="button" style="border-radius:50%; width:30px; height:30px;">-</button>
+						</div>
 					</td>
 				</tr>
 				<tr>

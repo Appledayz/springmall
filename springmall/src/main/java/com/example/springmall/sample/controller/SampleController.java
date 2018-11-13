@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,8 +38,10 @@ public class SampleController {
 	@RequestMapping(value="/sample/removeSample", method=RequestMethod.GET)
 	public String removeSample(@RequestParam(value="sampleNo") int sampleNo) {
 		System.out.println("SampleController.removeSample GET 요청 받음");
-		if(sampleService.removeSample(sampleNo)==1) {
-			System.out.println(sampleNo+"번 데이터 삭제 성공");
+		int i = sampleService.removeSample(sampleNo);
+		if(i>0) {
+			System.out.println("삭제한 데이터 ROW : "+i+"개");
+			System.out.println("sampleNo : "+sampleNo+"번 데이터 삭제 성공");
 		}
 		return "redirect:/sample/sampleList";
 	}
@@ -52,14 +55,15 @@ public class SampleController {
 	}
 	
 	//	3-2. 입력액션
-	@RequestMapping(value="/sample/addSample", method=RequestMethod.POST)
+	@PostMapping("/sample/addSample")
 	public String addSample(SampleRequest sampleRequest) {
 		System.out.println("SampleController.addSample POST 요청 받음");
 		//	- Sample 친구들...
 		//	command객체의 멤버변수 == input태그 name속성, 표준setter필요
 		System.out.println("SampleRequest.multiparFile : "+sampleRequest.getMultipartFile());
-		if(sampleService.addSample(sampleRequest)==1) {
-			System.out.println("입력 완료");
+		int i = sampleService.addSample(sampleRequest);
+		if(i>0) {
+			System.out.println("입력 완료 : "+i);
 		}
 		return "redirect:/sample/sampleList";
 	}
