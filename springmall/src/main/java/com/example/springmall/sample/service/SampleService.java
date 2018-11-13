@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.springmall.sample.common.DeleteFile;
 import com.example.springmall.sample.mapper.SampleFileMapper;
 import com.example.springmall.sample.mapper.SampleMapper;
 import com.example.springmall.sample.vo.Sample;
@@ -83,6 +84,13 @@ public class SampleService {
 	// 2
 	public int removeSample(int sampleNo) {
 		System.out.println("SampleService.removeSample()");
+		List<SampleFile> list = sampleFileMapper.selectSampleFileDirForDelete(sampleNo);
+		DeleteFile deleteFile = new DeleteFile();
+		for(SampleFile sampleFile : list) {
+			String sampleFileDir = sampleFile.getSampleFilePath()+"\\"+sampleFile.getSmapleFileName()+"."+sampleFile.getSampleFileExt();
+			System.out.println("sampleFileDir : "+sampleFileDir);
+			deleteFile.main(sampleFileDir);
+		}
 		int i=0;
 		i += sampleFileMapper.deleteSampleFile(sampleNo);
 		i += sampleMapper.deleteSample(sampleNo);
@@ -111,7 +119,7 @@ public class SampleService {
 				// 2. sampleNo
 				sampleFile.setSampleNo(sample.getSampleNo());
 				// 3. sampleFilePath
-				String path = "d:\\uploads";
+				String path = "D:\\dev\\uploads";
 				sampleFile.setSampleFilePath(path);
 				// 4. 확장자
 				String originalFileName = multipartFile.getOriginalFilename();
@@ -127,7 +135,7 @@ public class SampleService {
 				sampleFile.setSampleFileSize(multipartFile.getSize());
 	
 				//	경로가 없으면 생성한다.
-				File folder = new File("D:\\uploads");
+				File folder = new File("D:\\dev\\uploads");
 				if (!folder.exists()) {
 					if (folder.mkdirs()) {
 						System.out.println("Multiple directories are created!");

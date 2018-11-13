@@ -25,7 +25,14 @@
     	FROM samplefile
     	LIMIT #{startRow},#{rowPerPage};
     </select>
-    
+    <select id="selectSampleFileDirForDelete" resultType="com.example.springmall.sample.vo.SampleFile">
+		SELECT
+			samplefile_path as sampleFilePath,
+			samplefile_name as sampleFileName,
+			samplefile_ext as sampleFileExt
+		FROM samplefile
+		WHERE sample_no=#{sampleNo}
+    </select>
     <select id="selectCountSampleFileAll" resultType="int">
     	SELECT COUNT(*)
     	FROM samplefile;
