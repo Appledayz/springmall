@@ -14,22 +14,22 @@
     
     <select id="selectSampleFile" parameterType="hashmap" resultType="com.example.springmall.sample.vo.SampleFile">
     	SELECT
-    		samplefile_no as sampleFileNo,
+    		samplefile_no,
     		sample_no as sampleNo,
-    		samplefile_path as sampleFilePath,
-    		samplefile_name as sampleFileName,
-    		samplefile_ext as sampleFileExt,
-    		samplefile_type as sampleFileType,
-    		samplefile_size as sampleFileSize,
-    		samplefile_date as sampleFileDate
+    		samplefile_path,
+    		samplefile_name,
+    		samplefile_ext,
+    		samplefile_type,
+    		samplefile_size,
+    		samplefile_date
     	FROM samplefile
     	LIMIT #{startRow},#{rowPerPage};
     </select>
     <select id="selectSampleFileDirForDelete" resultType="com.example.springmall.sample.vo.SampleFile">
 		SELECT
-			samplefile_path as sampleFilePath,
-			samplefile_name as sampleFileName,
-			samplefile_ext as sampleFileExt
+			samplefile_path,
+			samplefile_name,
+			samplefile_ext
 		FROM samplefile
 		WHERE sample_no=#{sampleNo}
     </select>
@@ -40,14 +40,14 @@
     
     <select id="selectOne" parameterType="int" resultType="com.example.springmall.sample.vo.SampleFile">
     	SELECT
-    		samplefile_no as sampleFileNo,
-    		sample_no as sampleNo,
-    		samplefile_path as sampleFilePath,
-    		samplefile_name as sampleFileName,
-    		samplefile_ext as sampleFileExt,
-    		samplefile_type as sampleFileType,
-    		samplefile_size as sampleFileSize,
-    		samplefile_date as sampleFileDate
+    		samplefile_no,
+    		sample_no,
+    		samplefile_path,
+    		samplefile_name,
+    		samplefile_ext,
+    		samplefile_type,
+    		samplefile_size,
+    		samplefile_date
     	FROM samplefile
 		WHERE samplefile_no=#{sampleFileNo}
     </select>

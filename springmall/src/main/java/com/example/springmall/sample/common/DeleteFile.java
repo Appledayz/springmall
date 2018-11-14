@@ -10,22 +10,18 @@ public class DeleteFile {
 		// make sure directory exists
 		if (!directory.exists()) {
 			System.out.println("Directory does not exist.");
-			System.exit(0);
+			return;
 		} else {
 			try {
 				delete(directory);
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.exit(0);
+				return;
 			}
 		}
 		System.out.println("Done");
 	}
-
-	public DeleteFile() {
-		super();
-	}
-
+	
 	public void delete(File file) throws IOException {
 		if (file.isDirectory()) {
 			// directory is empty, then delete it

@@ -114,47 +114,49 @@ public class SampleService {
 
 		if (sampleRequest.getMultipartFile() != null) {
 			for(MultipartFile multipartFile : sampleRequest.getMultipartFile()) {
-				SampleFile sampleFile = new SampleFile();
-				// 1. sampleFileNo : AutoIncrement
-				// 2. sampleNo
-				sampleFile.setSampleNo(sample.getSampleNo());
-				// 3. sampleFilePath
-				String path = "D:\\dev\\uploads";
-				sampleFile.setSampleFilePath(path);
-				// 4. 확장자
-				String originalFileName = multipartFile.getOriginalFilename();
-				int pos = originalFileName.lastIndexOf(".");
-				String ext = originalFileName.substring(pos + 1);
-				sampleFile.setSampleFileExt(ext);
-				// 5. 이름
-				String filename = UUID.randomUUID().toString();
-				sampleFile.setSmapleFileName(filename);
-				// 6. 타입
-				sampleFile.setSampleFileType(multipartFile.getContentType());
-				// 7. 크기
-				sampleFile.setSampleFileSize(multipartFile.getSize());
-	
-				//	경로가 없으면 생성한다.
-				File folder = new File("D:\\dev\\uploads");
-				if (!folder.exists()) {
-					if (folder.mkdirs()) {
-						System.out.println("Multiple directories are created!");
-					} else {
-						System.out.println("Failed to create multiple directories!");
+				if(multipartFile.getSize() != 0) {
+					SampleFile sampleFile = new SampleFile();
+					// 1. sampleFileNo : AutoIncrement
+					// 2. sampleNo
+					sampleFile.setSampleNo(sample.getSampleNo());
+					// 3. sampleFilePath
+					String path = "D:\\dev\\uploads";
+					sampleFile.setSampleFilePath(path);
+					// 4. 확장자
+					String originalFileName = multipartFile.getOriginalFilename();
+					int pos = originalFileName.lastIndexOf(".");
+					String ext = originalFileName.substring(pos + 1);
+					sampleFile.setSampleFileExt(ext);
+					// 5. 이름
+					String filename = UUID.randomUUID().toString();
+					sampleFile.setSmapleFileName(filename);
+					// 6. 타입
+					sampleFile.setSampleFileType(multipartFile.getContentType());
+					// 7. 크기
+					sampleFile.setSampleFileSize(multipartFile.getSize());
+		
+					//	경로가 없으면 생성한다.
+					File folder = new File("D:\\dev\\uploads");
+					if (!folder.exists()) {
+						if (folder.mkdirs()) {
+							System.out.println("Multiple directories are created!");
+						} else {
+							System.out.println("Failed to create multiple directories!");
+						}
 					}
+					try {
+						//	내가 원하는 이름의 빈파일 하나를 만들자
+						File file = new File(path + "\\" + filename + "." + ext);
+						//	multipartFile파일을 빈파일로 복사하자
+						multipartFile.transferTo(file);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if(sampleFileMapper.insertSampleFile(sampleFile)==1) {
+						i++;
+					}
+					System.out.println(sampleFile.toString());
 				}
-				try {
-					//	내가 원하는 이름의 빈파일 하나를 만들자
-					File file = new File(path + "\\" + filename + "." + ext);
-					//	multipartFile파일을 빈파일로 복사하자
-					multipartFile.transferTo(file);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				if(sampleFileMapper.insertSampleFile(sampleFile)==1) {
-					i++;
-				}
-				System.out.println(sampleFile.toString());
 			}
 		}
 		return i;

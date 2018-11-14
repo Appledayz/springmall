@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +22,7 @@ public class SampleController {
 	private SampleService sampleService;
 	
 	//	1. 샘플목록
-	@RequestMapping(value="/sample/sampleList", method=RequestMethod.GET)
+	@GetMapping("/sample/sampleList")
 	public String sampleList(Model model, @RequestParam(value="page", required=false, defaultValue="1") int page) {	//	Model model = new Model();
 		System.out.println("SampleController.sampleList GET 요청 받음");
 		HashMap<String, Object> map = sampleService.getSampleList(page);
@@ -35,7 +36,7 @@ public class SampleController {
 	}
 	
 	//	2. 삭제
-	@RequestMapping(value="/sample/removeSample", method=RequestMethod.GET)
+	@GetMapping("/sample/removeSample")
 	public String removeSample(@RequestParam(value="sampleNo") int sampleNo) {
 		System.out.println("SampleController.removeSample GET 요청 받음");
 		int i = sampleService.removeSample(sampleNo);
@@ -47,7 +48,7 @@ public class SampleController {
 	}
 	
 	//	3-1. 입력폼
-	@RequestMapping(value="/sample/addSample", method=RequestMethod.GET)
+	@GetMapping("/sample/addSample")
 	public String addSample() {
 		System.out.println("SampleController.addSample GET 요청 받음");
 		return "/sample/addSample";
@@ -69,7 +70,7 @@ public class SampleController {
 	}
 	
 	//	4-1. 수정폼
-	@RequestMapping(value="/sample/modifySample", method=RequestMethod.GET)
+	@GetMapping("/sample/modifySample")
 	public String modifySample(Model model, @RequestParam(value="sampleNo") int sampleNo) {
 		System.out.println("SampleController.modifySample GET 요청 받음");
 		Sample sample = sampleService.getSample(sampleNo);
@@ -78,7 +79,7 @@ public class SampleController {
 	}
 	
 	//	4-2. 수정액션
-	@RequestMapping(value="/sample/modifySample", method=RequestMethod.POST)
+	@PostMapping("/sample/modifySample")
 	public String modifySample(Sample sample) {
 		System.out.println("SampleController.modifySample POST 요청 받음");
 		if(sampleService.modifySample(sample)==1) {

@@ -5,8 +5,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.example.springmall.sample.service.LoginService;
 import com.example.springmall.sample.vo.Sample;
@@ -22,7 +22,7 @@ public class LoginController {
 		return "/sample/login";
 	}
 	
-	@RequestMapping(value="/sample/login", method=RequestMethod.POST)
+	@PostMapping("/sample/login")
 	public String login(HttpSession session, Sample sample) {
 		System.out.println("LoginController.login POST요청");
 		if(loginService.login(sample)==1) {
